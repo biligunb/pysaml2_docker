@@ -1,19 +1,43 @@
-Dockerized version of PySAML2
- - https://github.com/IdentityPython/pysaml2
+# Dockerized version of PySAML2 (`pysaml2_docker`)
+[![biligunb](https://i.imgur.com/kwl63Eb.jpg)](https://medium.com/@biligunb)
 
-Changed to use with docker
- - idp_conf.py
- - service_conf.py
- - sp_conf.py
+### `pysaml2_docker` is a dockerized version of [PySAML2](https://github.com/IdentityPython/pysaml2) library.
+ - Ubuntu:18.04
+ - Customized to expose Docker to host
 
-### Docker image build
- - docker build -it bubuntu .
-### Docker run with ports exposed
- - docker run -it -p 8088:8088 -p 8087:8087 --rm bubuntu
-### Start services SP & IdP
- - cd example && ./all.sh start
-### Check in browser
- - http://localhost:8087
+### Help
+##### Docker build
+ - from main directory run
+    ```sh
+    $ docker build -t bubuntu .
+    ```
 
-#username : roland
-#password : dianakra
+##### Docker run
+ - from main directory run
+    ```sh
+    $ docker run -it -p 8088:8088 -p 8087:8087 --rm bubuntu
+    ```
+   - 8087 for SP
+   - 8088 for IdP
+
+##### Start services SP & IdP
+ - Go to example directory and run
+    ```sh
+    $ cd example
+    $ ./all.sh start
+    ```
+
+##### Check in browser
+ - Go to browser and type
+   - http://localhost:8087
+   - Username : roland
+   - Password : dianakra
+
+   > Step 1. Go to SP (http://localhost:8087)  
+   > Step 2. will be redirected to IdP login page (https://localhost:8088/sso/redirect?SAMLRequest=xxxx)  
+   > Step 3. Provide login information  
+   > Step 4. Successful login will be redirected to (http://localhost:8087/acs/post)  
+
+### Bugs
+  - Error after SSO login
+    - cheroot/server.py : `ValueError: WSGI Applications must yield bytes`
