@@ -33,12 +33,3 @@ RUN cd example/idp2/ && pwd && ls && make_metadata.py idp_conf.py > idp.xml
 
 EXPOSE 8087
 EXPOSE 8088
-
-# docker build -t bubuntu .
-# docker run -it -p 8088:8088 -p 8087:8087 --rm bubuntu
-# ./all.sh start
-# cd example/idp2/ && python3 idp.py idp_conf
-
-#http://localhost:8087
-#username : roland
-#password : dianakra
