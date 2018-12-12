@@ -33,7 +33,7 @@ HTTPS = True
 
 if HTTPS:
     BASE = "https://%s:%s" % (HOST, PORT)
-    BASE_BEBI = "https://%s:%s" % ('localhost', PORT)
+    BASE_LOCAL = "https://%s:%s" % ('localhost', PORT)
 else:
     BASE = "http://%s:%s" % (HOST, PORT)
 
@@ -72,10 +72,10 @@ CONFIG = {
             "name": "Rolands IdP",
             "endpoints": {
                 "single_sign_on_service": [
-                    ("%s/sso/redirect" % BASE_BEBI, BINDING_HTTP_REDIRECT),
-                    ("%s/sso/post" % BASE_BEBI, BINDING_HTTP_POST),
-                    ("%s/sso/art" % BASE_BEBI, BINDING_HTTP_ARTIFACT),
-                    ("%s/sso/ecp" % BASE_BEBI, BINDING_SOAP)
+                    ("%s/sso/redirect" % BASE_LOCAL, BINDING_HTTP_REDIRECT),
+                    ("%s/sso/post" % BASE, BINDING_HTTP_POST),
+                    ("%s/sso/art" % BASE, BINDING_HTTP_ARTIFACT),
+                    ("%s/sso/ecp" % BASE, BINDING_SOAP)
                 ],
                 "single_logout_service": [
                     ("%s/slo/soap" % BASE, BINDING_SOAP),

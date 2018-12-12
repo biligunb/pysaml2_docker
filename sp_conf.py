@@ -15,7 +15,8 @@ else:
     xmlsec_path = '/usr/local/bin/xmlsec1'
 
 # Make sure the same port number appear in service_conf.py
-BASE = "http://localhost:8087"
+BASE = "http://0.0.0.0:8087"
+BASE_LOCAL = "http://localhost:8087"
 
 CONFIG = {
     "entityid": "%s/%ssp.xml" % (BASE, ""),
@@ -28,7 +29,7 @@ CONFIG = {
             "logout_requests_signed": True,
             "endpoints": {
                 "assertion_consumer_service": [
-                    ("%s/acs/post" % BASE, BINDING_HTTP_POST)
+                    ("%s/acs/post" % BASE_LOCAL, BINDING_HTTP_POST)
                 ],
                 "single_logout_service": [
                     ("%s/slo/redirect" % BASE, BINDING_HTTP_REDIRECT),
