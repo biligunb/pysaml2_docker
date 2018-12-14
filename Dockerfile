@@ -25,10 +25,13 @@ RUN python3 setup.py install
 RUN ln -s /usr/bin/python3.6 /usr/bin/python
 
 ADD idp_conf.py example/idp2/idp_conf.py
+ADD idp.py example/idp2/idp.py
 ADD sp_conf.py example/sp-wsgi/sp_conf.py
 ADD service_conf.py example/sp-wsgi/service_conf.py
 
-RUN cd example/sp-wsgi/ && pwd && ls && make_metadata.py sp_conf.py > sp.xml
+# Dont generate use custom sp.xml
+#RUN cd example/sp-wsgi/ && pwd && ls && make_metadata.py sp_conf.py > sp.xml
+ADD sp.xml example/sp-wsgi/sp.xml
 RUN cd example/idp2/ && pwd && ls && make_metadata.py idp_conf.py > idp.xml
 
 EXPOSE 8087

@@ -26,6 +26,10 @@
     $ cd example
     $ ./all.sh start
     ```
+ - IdP only
+   ```
+   $ ./idp.py idp_conf &
+   ```
 
 ##### Check in browser
  - Go to browser and type
