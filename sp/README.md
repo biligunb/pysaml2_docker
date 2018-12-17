@@ -3,7 +3,6 @@
 This is an example SAML SP service written using [Flask](http://flask.pocoo.org/) and [pysaml2](https://github.com/rohe/pysaml2).
 
 # Requirements
-
 -   [Python](https://www.python.org/) 3.6+
 -   [Virtualenv](https://virtualenv.pypa.io/en/latest/)
 -   [pip](https://pip.pypa.io/en/stable/)
@@ -24,20 +23,21 @@ $ sudo apt-get install -y libffi-devel xmlsec1 xmlsec1-openssl memcached python-
 ```shell
 $ virtualenv -p python3 venv
 $ source venv/bin/activate
-$ pip install -r requirements.txt 
+$ pip install -r requirements.txt
 ```
 
 # Running
 
  ```shell
-$ python Hello.py 
+$ python app.py 
  ```
+
 # Testing Saruuls's Idp
 
     Edit the "app.py" file and uncomment the line in the "test" line in "metadata\_url\_for" dictionary.
     
     ```shell
-    $ $EDITOR Hello.py
+    $ $EDITOR app.py
     ```
     ```on the browser
     $ choose idp

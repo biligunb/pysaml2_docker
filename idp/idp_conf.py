@@ -29,7 +29,7 @@ def full_path(local_file):
 HOST = '0.0.0.0'
 PORT = 8088
 
-HTTPS = True
+HTTPS = False
 
 if HTTPS:
     BASE = "https://%s:%s" % (HOST, PORT)

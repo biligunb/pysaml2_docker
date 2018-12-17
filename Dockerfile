@@ -16,6 +16,8 @@ RUN pip3 install cherrypy
 RUN pip3 install cryptography==2.2.1
 
 ENV WORKSPACE=pysaml2
+ENV LC_ALL C.UTF-8
+ENV LANG en_US.UTF-8
 
 RUN mkdir $WORKSPACE
 RUN git clone https://github.com/IdentityPython/pysaml2.git
@@ -26,8 +28,16 @@ RUN ln -s /usr/bin/python3.6 /usr/bin/python
 
 ADD idp/idp_conf.py example/idp2/idp_conf.py
 ADD idp/idp.py example/idp2/idp.py
+ADD idp/idp.xml example/idp2/idp.xml
 ADD sp/sp.xml example/idp2/sp.xml
-RUN cd example/idp2/ && pwd && ls && make_metadata.py idp_conf.py > idp.xml
 
+RUN mkdir example/sp
+ADD sp/ example/sp/
+RUN cd example/sp && pip3 install -r requirements.txt
+
+RUN cd example/sp && set FLASK_APP=app.py
+RUN cd example/sp && set FLASK_ENV=development
+
+EXPOSE 5000
 EXPOSE 8087
 EXPOSE 8088

@@ -15,33 +15,33 @@
 ##### Docker run
  - from main directory run
     ```sh
-    $ docker run -it -p 8088:8088 -p 8087:8087 --rm bubuntu
+    $ docker run -it -p 8088:8088 -p 5000:5000 --rm bubuntu
     ```
-   - 8087 for SP
-   - 8088 for IdP
+   - 5000 for SP (Flask example)
+   - 8088 for IdP (PySAML2.0 example)
 
 ##### Start services SP & IdP
- - Go to example directory and run
-    ```sh
-    $ cd example
-    $ ./all.sh start
-    ```
- - IdP only
+ - Flask example (Start SP)
    ```
+   $ cd example/sp
+   $ ./python app.py
+   ```
+
+ - In different bash (Start IdP)
+   - docker ps
+   - docker exec -it <DOCKER_CONTAINER_ID> /bin/bash
+   ```
+   $ cd example/idp2
    $ ./idp.py idp_conf &
    ```
 
 ##### Check in browser
  - Go to browser and type
-   - http://localhost:8087
+   - http://localhost:5000
    - Username : roland
    - Password : dianakra
 
-   > Step 1. Go to SP (http://localhost:8087)  
+   > Step 1. Go to SP (http://localhost:5000)  
    > Step 2. will be redirected to IdP login page (https://localhost:8088/sso/redirect?SAMLRequest=xxxx)  
    > Step 3. Provide login information  
-   > Step 4. Successful login will be redirected to (http://localhost:8087/acs/post)  
-
-### Bugs
-  - Error after SSO login
-    - cheroot/server.py : `ValueError: WSGI Applications must yield bytes`
+   > Step 4. Successful login will be redirected to (http://localhost:5000/user)  
