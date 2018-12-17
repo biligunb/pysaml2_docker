@@ -112,6 +112,12 @@ def saml_client_for(idp_name=None):
                         (https_acs_url, BINDING_HTTP_REDIRECT),
                         (https_acs_url, BINDING_HTTP_POST)
                     ],
+                    'single_logout_service': [
+                        ('http://localhost:5000/saml/slo/idp', BINDING_HTTP_REDIRECT),
+                        ('http://localhost:5000/saml/slo/idp', BINDING_HTTP_POST),
+                        ('https://localhost:5000/saml/slo/idp', BINDING_HTTP_REDIRECT),
+                        ('https://localhost:5000/saml/slo/idp', BINDING_HTTP_POST)
+                    ],
                 },
                 # Don't verify that the incoming requests originate from us via
                 # the built-in cache for authn request ids in pysaml2
@@ -187,6 +193,7 @@ def idp_initiated(idp_name):
             'last_name': authn_response.ava['eduPersonTargetedID'][1],
             }
     user = User(username)
+    session['uid'] = user_info.text
     session['saml_attributes'] = authn_response.ava
     login_user(user)
     url = url_for('user')
@@ -235,10 +242,22 @@ def error_unauthorized(error):
     return render_template('unauthorized.html')
 
 
-@app.route("/logout")
+@app.route("/saml/logout/idp")
 @login_required
 def logout():
+    saml_client = saml_client_for('idp')
+
+    print ("biLGuuN 1: ")
+    print ("biLGuuN 2 : " + session['uid'])
+
+    res = saml_client.global_logout(session['uid'])
+
+    print ("biLGuuN 3")
+    print (res)
+    print ("biLGuuN 4")
+
     logout_user()
+
     return redirect(url_for("main_page"))
 
 if __name__ == "__main__":

@@ -74,14 +74,14 @@ CONFIG = {
             "endpoints": {
                 "single_sign_on_service": [
                     ("%s/sso/redirect" % BASE_BEBI, BINDING_HTTP_REDIRECT),
-                    ("%s/sso/post" % BASE, BINDING_HTTP_POST),
-                    ("%s/sso/art" % BASE, BINDING_HTTP_ARTIFACT),
-                    ("%s/sso/ecp" % BASE, BINDING_SOAP)
+                    ("%s/sso/post" % BASE_BEBI, BINDING_HTTP_POST),
+                    ("%s/sso/art" % BASE_BEBI, BINDING_HTTP_ARTIFACT),
+                    ("%s/sso/ecp" % BASE_BEBI, BINDING_SOAP)
                 ],
                 "single_logout_service": [
-                    ("%s/slo/soap" % BASE, BINDING_SOAP),
-                    ("%s/slo/post" % BASE, BINDING_HTTP_POST),
-                    ("%s/slo/redirect" % BASE, BINDING_HTTP_REDIRECT)
+                    ("%s/slo/soap" % BASE_BEBI, BINDING_SOAP),
+                    ("%s/slo/post" % BASE_BEBI, BINDING_HTTP_POST),
+                    ("%s/slo/redirect" % BASE_BEBI, BINDING_HTTP_REDIRECT)
                 ],
                 "artifact_resolve_service": [
                     ("%s/ars" % BASE, BINDING_SOAP)

@@ -32,8 +32,9 @@ ADD idp/idp.xml example/idp2/idp.xml
 ADD sp/sp.xml example/idp2/sp.xml
 
 RUN mkdir example/sp
-ADD sp/ example/sp/
+ADD sp/requirements.txt example/sp/requirements.txt
 RUN cd example/sp && pip3 install -r requirements.txt
+ADD sp/ example/sp/
 
 RUN cd example/sp && set FLASK_APP=app.py
 RUN cd example/sp && set FLASK_ENV=development
