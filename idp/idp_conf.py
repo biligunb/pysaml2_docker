@@ -33,8 +33,10 @@ HTTPS = False
 
 if HTTPS:
     BASE = "https://%s:%s" % (HOST, PORT)
+    BASE_BEBI = "https://%s:%s" % ('localhost', PORT)
 else:
     BASE = "http://%s:%s" % (HOST, PORT)
+    BASE_BEBI = "http://%s:%s" % ('localhost', PORT)
 
 # HTTPS cert information
 SERVER_CERT = "pki/mycert.pem"
@@ -71,7 +73,7 @@ CONFIG = {
             "name": "Rolands IdP",
             "endpoints": {
                 "single_sign_on_service": [
-                    ("%s/sso/redirect" % BASE, BINDING_HTTP_REDIRECT),
+                    ("%s/sso/redirect" % BASE_BEBI, BINDING_HTTP_REDIRECT),
                     ("%s/sso/post" % BASE, BINDING_HTTP_POST),
                     ("%s/sso/art" % BASE, BINDING_HTTP_ARTIFACT),
                     ("%s/sso/ecp" % BASE, BINDING_SOAP)
@@ -114,7 +116,7 @@ CONFIG = {
     "key_file": full_path("pki/mykey.pem"),
     "cert_file": full_path("pki/mycert.pem"),
     "metadata": {
-        "local": [full_path("../sp-wsgi/sp.xml")],
+        "local": [full_path("../idp2/sp.xml")],
     },
     "organization": {
         "display_name": "Rolands Identiteter",
