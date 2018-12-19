@@ -15,6 +15,7 @@
 import logging
 import os
 import uuid
+import json
 
 from flask import (
     Flask,
@@ -40,6 +41,9 @@ from saml2 import (
 )
 from saml2.client import Saml2Client
 from saml2.config import Config as Saml2Config
+from saml2.saml import NameID
+from saml2.saml import NAMEID_FORMAT_TRANSIENT
+from saml2.time_util import in_a_while, a_while_ago
 import requests
 
 # metadata_url_for contains PER APPLICATION configuration settings.
@@ -70,7 +74,10 @@ logging.basicConfig(level=logging.DEBUG)
 #   On a production system, this information must come
 #   from your system's user store.
 user_store = {}
-
+nid = NameID(name_qualifier="http://0.0.0.0:8088/idp.xml",
+    sp_name_qualifier="http://localhost:5000/sp.xml",
+    format=NAMEID_FORMAT_TRANSIENT,
+    text="initial")
 
 def saml_client_for(idp_name=None):
     '''
@@ -94,7 +101,7 @@ def saml_client_for(idp_name=None):
     #   this data should be cached as approprate for your production system.
     rv = requests.get(metadata_url_for[idp_name])
 
-    print ('\n\nAccertion consumer url : ' + acs_url + '\n\n')
+    print('\n\nAccertion consumer url : ' + acs_url + '\n\n')
 
     BASE = "http://localhost:5000"
 
@@ -169,9 +176,9 @@ def main_page():
 @app.route("/saml/sso/<idp_name>", methods=['POST'])
 def idp_initiated(idp_name):
     saml_client = saml_client_for(idp_name)
-    print ("\n\nSAMLResponse\n")
-    print (request.form['SAMLResponse'])
-    print ("\nSAMLResponse\n\n")
+    print("\n\nSAMLResponse\n")
+    print(request.form['SAMLResponse'])
+    print("\nSAMLResponse\n\n")
     authn_response = saml_client.parse_authn_request_response(
         request.form['SAMLResponse'],
         entity.BINDING_HTTP_POST)
@@ -179,10 +186,11 @@ def idp_initiated(idp_name):
     user_info = authn_response.get_subject()
     username = user_info.text
 
-    print ("\n\nuser_info\n")
-    print (user_info)
-    print (user_info.text)
-    print ("\nuser_info\n\n")
+    print("\n\nuser_info\n")
+    print(user_info)
+    print('\n')
+    print(user_info.text)
+    print("\nuser_info\n\n")
     # This is what as known as "Just In Time (JIT) provisioning".
     # What that means is that, if a user in a SAML assertion
     # isn't in the user store, we create that user first, then log them in
@@ -246,16 +254,20 @@ def error_unauthorized(error):
 def logout():
     saml_client = saml_client_for('idp')
 
-    print ("\n\n\nbiLGuuN 1: ")
-    print ("biLGuuN 2 : " + session['uid'])
+    print("\n\n\nbiLGuuN 1: ")
+    print("biLGuuN 2 : " + session['uid'])
+    nid.text = session['uid']
 
-    res = saml_client.global_logout(session['uid'])
-
-    print ("biLGuuN 3")
-    print (res)
-    print ("biLGuuN 4\n\n\n")
+    #res = saml_client.global_logout(nid.text)
+    res = saml_client.do_logout(nid,
+        ['http://0.0.0.0:8088/idp.xml'],
+        'logout request',
+        in_a_while(minutes=0),
+        expected_binding=BINDING_HTTP_REDIRECT)
+    print("biLGuuN 5\n\n\n")
 
     logout_user()
+    session.clear()
 
     return redirect(url_for("main_page"))
 
