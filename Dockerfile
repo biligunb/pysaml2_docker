@@ -28,6 +28,7 @@ RUN ln -s /usr/bin/python3.6 /usr/bin/python
 
 ADD idp/idp_conf.py example/idp2/idp_conf.py
 ADD idp/idp.py example/idp2/idp.py
+#RUN cd example/idp2/ && pwd && ls && make_metadata.py idp_conf.py > idp.xml
 ADD idp/idp.xml example/idp2/idp.xml
 ADD sp/sp.xml example/idp2/sp.xml
 

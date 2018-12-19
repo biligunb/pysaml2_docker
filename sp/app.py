@@ -94,7 +94,7 @@ def saml_client_for(idp_name=None):
     #   this data should be cached as approprate for your production system.
     rv = requests.get(metadata_url_for[idp_name])
 
-    print (acs_url)
+    print ('\n\nAccertion consumer url : ' + acs_url + '\n\n')
 
     BASE = "http://localhost:5000"
 
@@ -113,10 +113,8 @@ def saml_client_for(idp_name=None):
                         (https_acs_url, BINDING_HTTP_POST)
                     ],
                     'single_logout_service': [
-                        ('http://localhost:5000/saml/slo/idp', BINDING_HTTP_REDIRECT),
-                        ('http://localhost:5000/saml/slo/idp', BINDING_HTTP_POST),
-                        ('https://localhost:5000/saml/slo/idp', BINDING_HTTP_REDIRECT),
-                        ('https://localhost:5000/saml/slo/idp', BINDING_HTTP_POST)
+                        ("%s/saml/slo" % BASE, BINDING_HTTP_REDIRECT),
+                        ("%s/saml/slo" % BASE, BINDING_HTTP_POST),
                     ],
                 },
                 # Don't verify that the incoming requests originate from us via
@@ -125,7 +123,7 @@ def saml_client_for(idp_name=None):
                 # Don't sign authn requests, since signed requests only make
                 # sense in a situation where you control both the SP and IdP
                 'authn_requests_signed': True,
-                'logout_requests_signed': True,
+                'logout_requests_signed': False, #True default set to False (Otgoo)
                 'want_assertions_signed': False,
                 'want_response_signed': False,
             },
@@ -137,8 +135,9 @@ def saml_client_for(idp_name=None):
     spConfig.load(settings)
     spConfig.allow_unknown_attributes = True
     saml_client = Saml2Client(config=spConfig)
-    print("/////")
+    print("\n\nSAML client\n")
     print(saml_client)
+    print("\nSAML client\n\n")
     return saml_client
 
 
@@ -170,9 +169,9 @@ def main_page():
 @app.route("/saml/sso/<idp_name>", methods=['POST'])
 def idp_initiated(idp_name):
     saml_client = saml_client_for(idp_name)
-    print ("////////////////")
+    print ("\n\nSAMLResponse\n")
     print (request.form['SAMLResponse'])
-    print ("////////////////")
+    print ("\nSAMLResponse\n\n")
     authn_response = saml_client.parse_authn_request_response(
         request.form['SAMLResponse'],
         entity.BINDING_HTTP_POST)
@@ -180,10 +179,10 @@ def idp_initiated(idp_name):
     user_info = authn_response.get_subject()
     username = user_info.text
 
-    print ("////////////////")
+    print ("\n\nuser_info\n")
     print (user_info)
     print (user_info.text)
-    print ("////////////////")
+    print ("\nuser_info\n\n")
     # This is what as known as "Just In Time (JIT) provisioning".
     # What that means is that, if a user in a SAML assertion
     # isn't in the user store, we create that user first, then log them in
@@ -202,9 +201,9 @@ def idp_initiated(idp_name):
     #   to make sure it doesn't contain dangerous URLs!
     if 'RelayState' in request.form:
         url = request.form['RelayState']
-        print('-----------------')
+        print('\n\nRelayState\n')
         print(url)
-        print('-----------------')
+        print('\nRelayState\n\n')
     return redirect(url)
 
 
@@ -242,19 +241,19 @@ def error_unauthorized(error):
     return render_template('unauthorized.html')
 
 
-@app.route("/saml/logout/idp")
+@app.route("/saml/slo")
 @login_required
 def logout():
     saml_client = saml_client_for('idp')
 
-    print ("biLGuuN 1: ")
+    print ("\n\n\nbiLGuuN 1: ")
     print ("biLGuuN 2 : " + session['uid'])
 
     res = saml_client.global_logout(session['uid'])
 
     print ("biLGuuN 3")
     print (res)
-    print ("biLGuuN 4")
+    print ("biLGuuN 4\n\n\n")
 
     logout_user()
 

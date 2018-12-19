@@ -1154,7 +1154,7 @@ if __name__ == "__main__":
         )
 
     logger.info("Server starting")
-    print("IDP listening on %s:%s%s" % (HOST, PORT, _https))
+    print("\n\n\nIDP listening on %s:%s%s\n\n\n" % (HOST, PORT, _https))
     try:
         SRV.start()
     except KeyboardInterrupt:
