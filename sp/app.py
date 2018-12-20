@@ -74,8 +74,8 @@ logging.basicConfig(level=logging.DEBUG)
 #   On a production system, this information must come
 #   from your system's user store.
 user_store = {}
-nid = NameID(name_qualifier="http://0.0.0.0:8088/idp.xml",
-    sp_name_qualifier="http://localhost:5000/sp.xml",
+nid = NameID(name_qualifier="http://idp.local",
+    sp_name_qualifier="http://sp.local",
     format=NAMEID_FORMAT_TRANSIENT,
     text="initial")
 
@@ -106,7 +106,7 @@ def saml_client_for(idp_name=None):
     BASE = "http://localhost:5000"
 
     settings = {
-        "entityid": "%s/%ssp.xml" % (BASE, ""),
+        "entityid": "http://sp.local",
         'metadata': {
             'inline': [rv.text],
             },
@@ -249,7 +249,7 @@ def error_unauthorized(error):
     return render_template('unauthorized.html')
 
 
-@app.route("/saml/slo")
+@app.route("/logout")
 @login_required
 def logout():
     saml_client = saml_client_for('idp')
@@ -260,16 +260,22 @@ def logout():
 
     #res = saml_client.global_logout(nid.text)
     res = saml_client.do_logout(nid,
-        ['http://0.0.0.0:8088/idp.xml'],
+        ['http://idp.local'],
         'logout request',
         in_a_while(minutes=0),
         expected_binding=BINDING_HTTP_REDIRECT)
     print("biLGuuN 5\n\n\n")
 
-    logout_user()
-    session.clear()
+    binding, info = res["http://idp.local"]
 
-    return redirect(url_for("main_page"))
+    print("\n--- result binding ---")
+    print(binding)
+
+    print("\n--- result info ---")
+    print(info)
+
+    print("\n--- result info data ---")
+    print(info["data"])
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))

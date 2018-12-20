@@ -1,4 +1,4 @@
-<ns0:EntityDescriptor entityID="http://localhost:5000/sp.xml" xmlns:ns0="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ns1="http://www.w3.org/2000/09/xmldsig#">
+<ns0:EntityDescriptor entityID="http://sp.local" xmlns:ns0="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ns1="http://www.w3.org/2000/09/xmldsig#">
   <ns0:SPSSODescriptor AuthnRequestsSigned="true" WantAssertionsSigned="true" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
     <ns0:KeyDescriptor use="signing">
       <ns1:KeyInfo>

@@ -49,26 +49,10 @@ DIGEST_ALG = None
 
 
 CONFIG = {
-    "entityid": "%s/idp.xml" % BASE,
+    "entityid": "http://idp.local",
     "description": "My IDP",
     "valid_for": 168,
     "service": {
-        "aa": {
-            "endpoints": {
-                "attribute_service": [
-                    ("%s/attr" % BASE, BINDING_SOAP)
-                ]
-            },
-            "name_id_format": [NAMEID_FORMAT_TRANSIENT,
-                               NAMEID_FORMAT_PERSISTENT]
-        },
-        "aq": {
-            "endpoints": {
-                "authn_query_service": [
-                    ("%s/aqs" % BASE, BINDING_SOAP)
-                ]
-            },
-        },
         "idp": {
             "name": "Rolands IdP",
             "endpoints": {
@@ -82,22 +66,7 @@ CONFIG = {
                     ("%s/slo/soap" % BASE_BEBI, BINDING_SOAP),
                     ("%s/slo/post" % BASE_BEBI, BINDING_HTTP_POST),
                     ("%s/slo/redirect" % BASE_BEBI, BINDING_HTTP_REDIRECT)
-                ],
-                "artifact_resolve_service": [
-                    ("%s/ars" % BASE, BINDING_SOAP)
-                ],
-                "assertion_id_request_service": [
-                    ("%s/airs" % BASE, BINDING_URI)
-                ],
-                "manage_name_id_service": [
-                    ("%s/mni/soap" % BASE, BINDING_SOAP),
-                    ("%s/mni/post" % BASE, BINDING_HTTP_POST),
-                    ("%s/mni/redirect" % BASE, BINDING_HTTP_REDIRECT),
-                    ("%s/mni/art" % BASE, BINDING_HTTP_ARTIFACT)
-                ],
-                "name_id_mapping_service": [
-                    ("%s/nim" % BASE, BINDING_SOAP),
-                ],
+                ]
             },
             "policy": {
                 "default": {
